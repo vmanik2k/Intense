@@ -49,13 +49,13 @@ class RowReusableCardButtonBanner extends StatelessWidget {
 
 class _ReusableMaterialButton extends StatelessWidget {
   const _ReusableMaterialButton({
-    // required Key key,
+     Key? key,
     required this.onPressed,
     required this.icon,
     required this.label,
-  });
-  //     : super(key: key)
-  // ;
+  })
+       : super(key: key)
+   ;
 
   final Function onPressed;
   final IconData icon;
