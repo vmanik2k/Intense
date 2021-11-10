@@ -1,5 +1,5 @@
 class string {
-  //WelcolcomePage
+  //WelcocomePage
 
   static const get_started = 'Get Started';
   static const teacher = 'Teachers';

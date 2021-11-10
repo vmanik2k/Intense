@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:intense/UI/utility/constants.dart';
 import 'package:intense/UI/utility/custom_icons.dart';
 import 'package:intense/imports.dart';
-//import 'package:intense/UI/utility/Resources.dart';
 class StudentDashboard extends StatefulWidget {
   // StudentDashboard({required Key key}) : super(key: key) {
   //   // setCurrentScreen();
@@ -27,6 +25,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
               Expanded(
                 child: ListView(
                   children: [
+                    SizedBox(height: 10),
                     Container(
                       height: 110,
                       child: Row(
@@ -34,7 +33,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                         children: <Widget>[
                           RowReusableCardButton(
                             tileColor: Colors.deepOrangeAccent,
-                            label:string.e_card,
+                            label: string.e_card,
                             onPressed: () {
                               // kopenPage(context, ECardPage());
                             },
@@ -212,6 +211,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                       icon: Icons.receipt,
                       directionIcon: Icons.chevron_right, directionIconHeroTag: '',
                     ),
+                    SizedBox(height: 5),
                   ],
                 ),
               ),
