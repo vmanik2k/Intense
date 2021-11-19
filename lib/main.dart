@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Intense Time',
+      title: 'Intense',
       debugShowCheckedModeBanner: false,
       home: StudentDashboard(),
     );
