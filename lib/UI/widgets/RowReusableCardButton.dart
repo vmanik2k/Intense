@@ -38,7 +38,7 @@ class RowReusableCardButtonBanner extends StatelessWidget {
           color: tileColor,
           child: Banner(
             location: BannerLocation.topStart,
-            message: 'Premium',
+            message: '',
             child: new _ReusableMaterialButton(onPressed: onPressed, icon: icon, label: label),
           ),
         ),

@@ -1,14 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-
-import 'package:file_picker/file_picker.dart';
+import 'package:intense/imports.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter/services.dart';
 // import 'ImageCompress.dart' as CompressImage;
-import 'SlideRoute.dart';
 
 var kTextFieldDecoration = InputDecoration(
   border: OutlineInputBorder(
@@ -164,3 +158,60 @@ String getChatId(List<String> list) {
 
   return chatId;
 }
+
+final kHintTextStyle = TextStyle(
+  fontWeight: FontWeight.bold,
+  color: Colors.white70,
+  fontFamily: 'OpenSans',
+);
+
+final kFFHintTextStyle = TextStyle(
+  fontWeight: FontWeight.bold,
+  color: Colors.black38,
+  fontFamily: 'OpenSans',
+);
+
+final kLabelStyle = TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSans',
+);
+
+final kListLabelStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSans',
+);
+
+final kDecorationStyle = BoxDecoration(
+  color: kPrimaryLightColor,
+  borderRadius: BorderRadius.circular(29),
+);
+
+final kBoxDecorationStyle = BoxDecoration(
+  color: Color(0xFF607D8B),
+  borderRadius: BorderRadius.circular(10.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black12,
+      blurRadius: 6.0,
+      offset: Offset(0, 2),
+    ),
+  ],
+);
+
+final kFFBoxDecorationStyle = BoxDecoration(
+  color: Colors.white38,
+  borderRadius: BorderRadius.circular(10.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black12,
+      blurRadius: 6.0,
+      offset: Offset(0, 2),
+    ),
+  ],
+);
+
+const kPrimaryColor = Color(0xFF6F35A5);
+const kPrimaryLightColor = Color(0xFFF1E6FF);
+const kSecondaryColor = Color(0xFF9949FF);

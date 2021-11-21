@@ -18,7 +18,7 @@
 //   String pageName = string.home;
 //
 //   List<Widget> pages = [
-//     MainDashboard.dart(),
+//     TeacherDashboard.dart(),
 //     ChatPage(),
 //     // NotificationPage(),
 //     SettingPage()
@@ -176,7 +176,7 @@
 //         } else {
 //           setState(() {
 //             if (v == 0) {
-//               pageName = MainDashboard.dart.pageName;
+//               pageName = TeacherDashboard.dart.pageName;
 //             } else if (v == 1) {
 //               pageName = ChatPage.pageName;
 //             } else if (v == 2) {

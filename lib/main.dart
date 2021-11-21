@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Intense',
       debugShowCheckedModeBanner: false,
-      home: StudentDashboard(),
+      home: WelcomeScreen(),
     );
   }
 }

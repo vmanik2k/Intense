@@ -4,7 +4,7 @@ import 'package:intense/UI/utility/custom_icons.dart';
 import 'package:intense/imports.dart';
 class StudentDashboard extends StatefulWidget {
   // StudentDashboard({required Key key}) : super(key: key) {
-  //   // setCurrentScreen();
+  //   setCurrentScreen();
   // }
   // static String pageName = string.dashboard;
   _StudentDashboardState createState() => new _StudentDashboardState();
@@ -139,8 +139,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              RowReusableCardButtonBanner(
-                                paddingTop: 0,
+                              RowReusableCardButton(
                                 tileColor: Colors.pink,
                                 icon: Icons.assistant_photo,
                                 label: string.exams,
@@ -148,8 +147,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                   // kopenPage(context, TopicSelectPage());
                                 },
                               ),
-                              RowReusableCardButtonBanner(
-                                paddingTop: 0,
+                              RowReusableCardButton(
                                 tileColor: Colors.tealAccent,
                                 icon: FontAwesomeIcons.book,
                                 label: string.e_book,
@@ -157,12 +155,13 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                   // kopenPage(context, EBookSelect());
                                 },
                               ),
-                              RowReusableCardButtonBanner(
-                                paddingTop: 0,
+                              RowReusableCardButton(
                                 tileColor: Colors.deepPurpleAccent,
                                 icon: FontAwesomeIcons.cameraRetro,
                                 label: string.video,
-                                onPressed: () {},
+                                onPressed: () {
+
+                                },
                               ),
                             ],
                           ),
@@ -178,7 +177,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              RowReusableCardButtonBanner(
+                              RowReusableCardButton(
                                 tileColor: Colors.pinkAccent,
                                 icon: FontAwesomeIcons.female,
                                 label: string.parenting_guide,
@@ -186,13 +185,13 @@ class _StudentDashboardState extends State<StudentDashboard> {
                                   // kopenPage(context, ParentingGuidePage());
                                 },
                               ),
-                              RowReusableCardButtonBanner(
+                              RowReusableCardButton(
                                 tileColor: Colors.red,
                                 icon: FontAwesomeIcons.medkit,
                                 label: string.health_tips,
                                 onPressed: () {},
                               ),
-                              RowReusableCardButtonBanner(
+                              RowReusableCardButton(
                                 tileColor: Colors.blue,
                                 icon: FontAwesomeIcons.userMd,
                                 label: string.vaccinations,
