@@ -39,7 +39,7 @@ class WelcomeScreen extends StatefulWidget {
               MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           },
-          child: Text('LOGIN',
+          child: Text('Student',
             style: TextStyle(
               fontFamily: 'OpenSans',
               color: kPrimaryLightColor,
@@ -83,7 +83,7 @@ class WelcomeScreen extends StatefulWidget {
               MaterialPageRoute(builder: (context) => RegNowScreen()),
             );
           },
-          child: Text('REGISTER NOW',
+          child: Text('Teacher',
             style: TextStyle(
               fontFamily: 'OpenSans',
               color: kPrimaryColor,
@@ -104,7 +104,7 @@ class WelcomeScreen extends StatefulWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "WELCOME TO P.I.E.T.",
+                "WELCOME",
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontSize: 28,

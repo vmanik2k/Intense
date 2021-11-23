@@ -292,7 +292,7 @@ class _RegNowScreenState extends State<RegNowScreen> {
           //   }
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => StudentDashboard()),
+            MaterialPageRoute(builder: (context) => TeacherDashboard()),
           );
         },
         child: Text(
@@ -308,39 +308,6 @@ class _RegNowScreenState extends State<RegNowScreen> {
     );
   }
 
-  Widget _buildOrDivider() {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: size.height * 0.02),
-      width: size.width * 0.8,
-      child: Row(
-        children: <Widget>[
-          buildDivider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              "OR",
-              style: TextStyle(
-                color: kPrimaryColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          buildDivider(),
-        ],
-      ),
-    );
-  }
-
-  Expanded buildDivider() {
-    return Expanded(
-      child: Divider(
-        color: Color(0xFFD9D9D9),
-        height: 1.5,
-      ),
-    );
-  }
-
   // void call() async {
   //   await Googlesignin.login();
   //   if (Googlesignin.isSigning) {
@@ -348,38 +315,6 @@ class _RegNowScreenState extends State<RegNowScreen> {
   //         context, MaterialPageRoute(builder: (context) => NewStudentScreen()));
   //   }
   // }
-
-  Widget _buildSocialBtn() {
-    return GestureDetector(
-      onTap:  () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                StudentDashboard(),
-          ),
-        );
-      },
-      child: Container(
-        height: 50.0,
-        width: 50.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 10.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: AssetImage('assets/login/google1.jpg'),
-          ),
-        ),
-      ),
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -428,8 +363,6 @@ class _RegNowScreenState extends State<RegNowScreen> {
               //     );
               //   },
               // ),
-              _buildOrDivider(),
-              _buildSocialBtn(),
               SizedBox(height: 15.0),
             ],
           ),
