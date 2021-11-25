@@ -1,10 +1,9 @@
 import 'package:intense/UI/widgets/DashboardButton.dart';
 import 'package:intense/imports.dart';
-
 class StudentDashboard extends StatefulWidget {
-  // StudentDashboard({required Key key}) : super(key: key) {
+  StudentDashboard({Key? key,this.user}) : super(key: key);
   //   setCurrentScreen();
-  // }
+  final User? user;
   // static String pageName = string.dashboard;
   _StudentDashboardState createState() => new _StudentDashboardState();
 }
@@ -95,7 +94,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  // signOut();
+                  FirebaseAuth.instance.signOut();
                   Navigator.of(context, rootNavigator: true).pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content:

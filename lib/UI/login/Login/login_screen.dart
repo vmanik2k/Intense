@@ -2,6 +2,8 @@ import 'package:intense/imports.dart';
 import 'package:intense/UI/utility/account_check.dart';
 
 class LoginScreen extends StatefulWidget {
+  final User? user;
+  LoginScreen({Key? key,this.user}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -9,65 +11,65 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   // String mail = '';
   // String pass = '';
-  // FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailcontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // void _signInWithEmailAndPassword() async {
-  //   try {
-  //     final User? user = (await _auth.signInWithEmailAndPassword(
-  //             email: _emailcontroller.text, password: _passwordcontroller.text))
-  //         .user;
-  //     if (!user!.emailVerified) {
-  //       await user.sendEmailVerification();
-  //     }
-  //     if (user.emailVerified) {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => StudentDashboard()),
-  //       );
-  //     } else {
-  //       showDialog(
-  //         context: context,
-  //         builder: (builder) => AlertDialog(
-  //           content: Text('Please Verify your Email'),
-  //           actions: <Widget>[
-  //             OutlinedButton(
-  //               style: OutlinedButton.styleFrom(
-  //                 side: BorderSide(color: Colors.white),
-  //               ),
-  //               onPressed: () {
-  //                 Navigator.push(
-  //                   context,
-  //                   MaterialPageRoute(builder: (context) => LoginScreen()),
-  //                 );
-  //               },
-  //               child: Text(
-  //                 'OK',
-  //                 style: TextStyle(
-  //                   color: Colors.black,
-  //                   letterSpacing: 1,
-  //                   fontSize: 13.0,
-  //                   fontWeight: FontWeight.bold,
-  //                   fontFamily: 'OpenSans',
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //     print('Wrong Email ID or Password');
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text("Wrong Email ID or Password"),
-  //       ),
-  //     );
-  //   }
-  // }
+  void _signInWithEmailAndPassword() async {
+    try {
+      final User? user = (await _auth.signInWithEmailAndPassword(
+              email: _emailcontroller.text, password: _passwordcontroller.text))
+          .user;
+      if (!user!.emailVerified) {
+        await user.sendEmailVerification();
+      }
+      if (user.emailVerified) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => StudentDashboard(user: widget.user,)),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (builder) => AlertDialog(
+            content: Text('Please Verify your Email'),
+            actions: <Widget>[
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen(user:widget.user)),
+                  );
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Colors.black,
+                    letterSpacing: 1,
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      print(e.toString());
+      print('Wrong Email ID or Password');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Wrong Email ID or Password"),
+        ),
+      );
+    }
+  }
 
   Widget _buildEmailTF() {
     return Column(children: <Widget>[
@@ -188,14 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(29),
         ),
         onPressed: () {
-          // async {
-          //   if (_formKey.currentState.validate()) {
-          //     _signInWithEmailAndPassword();
-          //   }
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => StudentDashboard()),
-          );
+            if (_formKey.currentState!.validate()) {
+              _signInWithEmailAndPassword();
+            }
         },
         child: Text(
           'LOGIN',

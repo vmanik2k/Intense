@@ -1,6 +1,6 @@
 import 'package:intense/imports.dart';
 // import 'package:intense/UI/utility/account_check.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class RegNowScreen extends StatefulWidget {
   @override
   _RegNowScreenState createState() => _RegNowScreenState();
@@ -13,11 +13,13 @@ class RegNowScreen extends StatefulWidget {
 
 class _RegNowScreenState extends State<RegNowScreen> {
   // Mobileverification currentState = Mobileverification.Show_Mobile_Form;
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final TextEditingController _pwd = TextEditingController();
+  final TextEditingController _confirmpwd = TextEditingController();
   // final TextEditingController _otp = TextEditingController();
 
   // late String verificationID;
@@ -114,6 +116,27 @@ class _RegNowScreenState extends State<RegNowScreen> {
   //     ),
   //   );
   // }
+
+  String? emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern.toString());
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
+
+  String? pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
+
+
 
   Widget _buildNameTF() {
     return Column(children: <Widget>[
@@ -221,7 +244,60 @@ class _RegNowScreenState extends State<RegNowScreen> {
     ]);
   }
 
-  Widget _buildPhoneTF() {
+  // Widget _buildPhoneTF() {
+  //   return Column(children: <Widget>[
+  //     Container(
+  //       margin: EdgeInsets.symmetric(vertical: 10),
+  //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+  //       width: MediaQuery.of(context).size.width * 0.8,
+  //       decoration: BoxDecoration(
+  //         border: Border.all(
+  //           color: Color(0xFF6F35A5),
+  //           width: 2,
+  //         ),
+  //         color: Color(0xFFF1E6FF),
+  //         borderRadius: BorderRadius.circular(30.0),
+  //         boxShadow: [
+  //           BoxShadow(
+  //             color: Colors.black38,
+  //             blurRadius: 6.0,
+  //             offset: Offset(0, 2),
+  //           ),
+  //         ],
+  //       ),
+  //       child: TextFormField(
+  //         controller: _phone,
+  //         keyboardType: TextInputType.number,
+  //         style: TextStyle(
+  //           color: kPrimaryColor,
+  //           fontFamily: 'OpenSans',
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //         cursorColor: kPrimaryColor,
+  //         validator: (value) {
+  //           if (value!.isEmpty) return '*Please enter your Phone Number';
+  //           return null;
+  //         },
+  //         decoration: InputDecoration(
+  //           errorStyle: TextStyle(height: 0),
+  //           border: InputBorder.none,
+  //           contentPadding: EdgeInsets.only(top: 14.0),
+  //           prefixIcon: Icon(
+  //             Icons.phone,
+  //             color: kPrimaryColor,
+  //           ),
+  //           hintText: 'Enter your Phone Number',
+  //           hintStyle: TextStyle(
+  //             color: Colors.black54,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ),
+  //     )
+  //   ]);
+  // }
+
+  Widget _buildPasswordTF() {
     return Column(children: <Widget>[
       Container(
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -243,8 +319,8 @@ class _RegNowScreenState extends State<RegNowScreen> {
           ],
         ),
         child: TextFormField(
-          controller: _phone,
-          keyboardType: TextInputType.number,
+          controller: _pwd,
+          keyboardType: TextInputType.visiblePassword,
           style: TextStyle(
             color: kPrimaryColor,
             fontFamily: 'OpenSans',
@@ -252,7 +328,7 @@ class _RegNowScreenState extends State<RegNowScreen> {
           ),
           cursorColor: kPrimaryColor,
           validator: (value) {
-            if (value!.isEmpty) return '*Please enter your Phone Number';
+            if (value!.isEmpty) return 'Please enter your Password';
             return null;
           },
           decoration: InputDecoration(
@@ -260,10 +336,63 @@ class _RegNowScreenState extends State<RegNowScreen> {
             border: InputBorder.none,
             contentPadding: EdgeInsets.only(top: 14.0),
             prefixIcon: Icon(
-              Icons.phone,
+              Icons.password,
               color: kPrimaryColor,
             ),
-            hintText: 'Enter your Phone Number',
+            hintText: 'Enter your Password',
+            hintStyle: TextStyle(
+              color: Colors.black54,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      )
+    ]);
+  }
+
+  Widget _buildConfirmPasswordTF() {
+    return Column(children: <Widget>[
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        width: MediaQuery.of(context).size.width * 0.8,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0xFF6F35A5),
+            width: 2,
+          ),
+          color: Color(0xFFF1E6FF),
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,
+              blurRadius: 6.0,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: TextFormField(
+          controller: _confirmpwd,
+          keyboardType: TextInputType.visiblePassword,
+          style: TextStyle(
+            color: kPrimaryColor,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.bold,
+          ),
+          cursorColor: kPrimaryColor,
+          validator: (value) {
+            if (value!.isEmpty) return 'Please enter your Password';
+            return null;
+          },
+          decoration: InputDecoration(
+            errorStyle: TextStyle(height: 0),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 14.0),
+            prefixIcon: Icon(
+              Icons.password,
+              color: kPrimaryColor,
+            ),
+            hintText: 'Enter your Password',
             hintStyle: TextStyle(
               color: Colors.black54,
               fontWeight: FontWeight.bold,
@@ -286,14 +415,91 @@ class _RegNowScreenState extends State<RegNowScreen> {
           borderRadius: BorderRadius.circular(30.0),
         ),
         onPressed: () {
-          // async {
-          //   if (_key.currentState.validate()) {
-          //     _phoneNumberVerification();
-          //   }
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TeacherDashboard()),
-          );
+          if (_key.currentState!.validate()) {
+            if (_pwd.text ==
+                _confirmpwd.text) {
+              FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                  email: _email.text,
+                  password: _pwd.text)
+                  .then((currentUser) => FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(currentUser.user!.uid)
+                  .set({
+                "uid": currentUser.user!.uid,
+                "name": _name.text,
+                "email": _email.text,
+              }).then((value) async {
+                try {
+                  await currentUser.user!
+                      .sendEmailVerification();
+                  Fluttertoast.showToast(
+                      msg: "Verification Email Sent",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 3,
+                      textColor: Colors.black,
+                      fontSize: 16.0
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen(
+                            user: currentUser.user)),
+                  );
+                  _name.clear();
+                  _email.clear();
+                  _pwd.clear();
+                  _confirmpwd.clear();
+                } catch (e) {
+                  print(
+                      "An error occurred while trying to send email verification");
+                  Fluttertoast.showToast(
+                      msg: e.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 3,
+                      textColor: Colors.black,
+                      fontSize: 16.0
+                  );
+                }
+              }).catchError((err) =>
+                  Fluttertoast.showToast(
+                      msg: err.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 3,
+                      textColor: Colors.black,
+                      fontSize: 16.0
+                  )))
+                  .catchError((err) =>
+                  Fluttertoast.showToast(
+                      msg: err.toString(),
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 3,
+                      textColor: Colors.black,
+                      fontSize: 16.0
+                  ));
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Error"),
+                      content: Text("The passwords do not match"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text("Close"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            }
+          }
         },
         child: Text(
           'LOGIN',
@@ -344,7 +550,9 @@ class _RegNowScreenState extends State<RegNowScreen> {
                       children: <Widget>[
                         _buildNameTF(),
                         _buildEmailTF(),
-                        _buildPhoneTF(),
+                        //_buildPhoneTF(),
+                        _buildPasswordTF(),
+                        _buildConfirmPasswordTF(),
                         _buildLoginBtn(),
                       ]
                   )

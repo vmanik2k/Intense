@@ -2,8 +2,9 @@ import 'package:intense/UI/widgets/DashboardButton.dart';
 import 'package:intense/imports.dart';
 
 class TeacherDashboard extends StatefulWidget {
-  // StudentDashboard({required Key key}) : super(key: key) {
+  TeacherDashboard({Key? key,required this.user}) : super(key: key);
   //   setCurrentScreen();
+  final User user;
   // }
   // static String pageName = string.dashboard;
   _TeacherDashboardState createState() => new _TeacherDashboardState();

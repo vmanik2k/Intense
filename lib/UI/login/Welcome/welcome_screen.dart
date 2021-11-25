@@ -1,11 +1,42 @@
 import 'package:intense/imports.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class WelcomeScreen extends StatefulWidget {
+
+  final User? user;
+  WelcomeScreen({Key? key,this.user}) : super(key: key);
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
   }
 
   class _WelcomeScreenState extends State<WelcomeScreen> {
+
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+    void _studentCurrentState(){
+      FirebaseAuth.instance
+          .authStateChanges()
+          .listen((User? user) {
+        if (user == null) {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoginScreen(user: widget.user)));
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => StudentDashboard(user: user)));
+        }
+      });
+    }
+
+    void _teacherCurrentState(){
+      FirebaseAuth.instance
+          .authStateChanges()
+          .listen((User? user) {
+        if (user == null) {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => RegNowScreen()));
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TeacherDashboard(user: user)));
+        }
+      });
+    }
 
     Widget _buildLoginBtn() {
       return Container(
@@ -34,10 +65,7 @@ class WelcomeScreen extends StatefulWidget {
             borderRadius: BorderRadius.circular(30),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
+            _studentCurrentState();
           },
           child: Text('Student',
             style: TextStyle(
@@ -78,10 +106,7 @@ class WelcomeScreen extends StatefulWidget {
             borderRadius: BorderRadius.circular(30),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RegNowScreen()),
-            );
+            _teacherCurrentState();
           },
           child: Text('Teacher',
             style: TextStyle(
