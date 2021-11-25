@@ -3,7 +3,7 @@ import 'package:intense/UI/utility/account_check.dart';
 
 class LoginScreen extends StatefulWidget {
   final User? user;
-  LoginScreen({Key? key,this.user}) : super(key: key);
+  LoginScreen({Key? key, this.user}) : super(key: key);
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailcontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String dropdownvalue = 'Teacher';
   void _signInWithEmailAndPassword() async {
     try {
       final User? user = (await _auth.signInWithEmailAndPassword(
@@ -27,7 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user.emailVerified) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => StudentDashboard(user: widget.user,)),
+          MaterialPageRoute(
+              builder: (context) => StudentDashboard(
+                    user: widget.user,
+                  )),
         );
       } else {
         showDialog(
@@ -42,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen(user:widget.user)),
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen(user: widget.user)),
                   );
                 },
                 child: Text(
@@ -69,6 +73,22 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
+  }
+
+  Widget dropdown() {
+    var items = ['Teacher', 'Student'];
+
+    return DropdownButton(
+        value: dropdownvalue,
+        icon: Icon(Icons.keyboard_arrow_down),
+        items: items.map((String items) {
+          return DropdownMenuItem(value: items, child: Text(items));
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            dropdownvalue = newValue!;
+          });
+        });
   }
 
   Widget _buildEmailTF() {
@@ -189,10 +209,23 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(29),
         ),
-        onPressed: () {
-            if (_formKey.currentState!.validate()) {
+        onPressed: () async {
+          String email = '';
+          bool check = false;
+          QuerySnapshot qs =
+              await FirebaseFirestore.instance.collection(dropdownvalue).get();
+          qs.docs.forEach((DocumentSnapshot snap) {
+            email = snap.get('email');
+            print(email);
+            if (email == _emailcontroller.text) {
+              check = true;
+            }
+          });
+          if (_formKey.currentState!.validate()) {
+            if (check) {
               _signInWithEmailAndPassword();
             }
+          }
         },
         child: Text(
           'LOGIN',
@@ -230,16 +263,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Form(
-                  key: _formKey,
-                  child: Column(
-                      children: <Widget>[
-                        _buildEmailTF(),
-                        _buildPasswordTF(),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.015),
-                        _buildLoginBtn(),
-                      ]
-                  ),
+                key: _formKey,
+                child: Column(children: <Widget>[
+                  _buildEmailTF(),
+                  _buildPasswordTF(),
+                  dropdown(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                  _buildLoginBtn(),
+                ]),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // AlreadyHaveAnAccountCheck(

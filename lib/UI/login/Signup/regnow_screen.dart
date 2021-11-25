@@ -1,6 +1,10 @@
+// ignore_for_file: empty_constructor_bodies
+
 import 'package:intense/imports.dart';
 // import 'package:intense/UI/utility/account_check.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RegNowScreen extends StatefulWidget {
   @override
   _RegNowScreenState createState() => _RegNowScreenState();
@@ -13,6 +17,7 @@ class RegNowScreen extends StatefulWidget {
 
 class _RegNowScreenState extends State<RegNowScreen> {
   // Mobileverification currentState = Mobileverification.Show_Mobile_Form;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -20,6 +25,9 @@ class _RegNowScreenState extends State<RegNowScreen> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _pwd = TextEditingController();
   final TextEditingController _confirmpwd = TextEditingController();
+  CollectionReference _colT = FirebaseFirestore.instance.collection('Teacher');
+  CollectionReference _colS = FirebaseFirestore.instance.collection('Student');
+  String dropdownvalue = 'Teacher';
   // final TextEditingController _otp = TextEditingController();
 
   // late String verificationID;
@@ -135,8 +143,6 @@ class _RegNowScreenState extends State<RegNowScreen> {
       return null;
     }
   }
-
-
 
   Widget _buildNameTF() {
     return Column(children: <Widget>[
@@ -416,72 +422,73 @@ class _RegNowScreenState extends State<RegNowScreen> {
         ),
         onPressed: () {
           if (_key.currentState!.validate()) {
-            if (_pwd.text ==
-                _confirmpwd.text) {
+            if (_pwd.text == _confirmpwd.text) {
               FirebaseAuth.instance
                   .createUserWithEmailAndPassword(
-                  email: _email.text,
-                  password: _pwd.text)
+                      email: _email.text, password: _pwd.text)
                   .then((currentUser) => FirebaseFirestore.instance
-                  .collection("Users")
-                  .doc(currentUser.user!.uid)
-                  .set({
-                "uid": currentUser.user!.uid,
-                "name": _name.text,
-                "email": _email.text,
-              }).then((value) async {
-                try {
-                  await currentUser.user!
-                      .sendEmailVerification();
-                  Fluttertoast.showToast(
-                      msg: "Verification Email Sent",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 3,
-                      textColor: Colors.black,
-                      fontSize: 16.0
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen(
-                            user: currentUser.user)),
-                  );
-                  _name.clear();
-                  _email.clear();
-                  _pwd.clear();
-                  _confirmpwd.clear();
-                } catch (e) {
-                  print(
-                      "An error occurred while trying to send email verification");
-                  Fluttertoast.showToast(
-                      msg: e.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 3,
-                      textColor: Colors.black,
-                      fontSize: 16.0
-                  );
-                }
-              }).catchError((err) =>
-                  Fluttertoast.showToast(
+                          .collection("Users")
+                          .doc(currentUser.user!.uid)
+                          .set({
+                        "uid": currentUser.user!.uid,
+                        "name": _name.text,
+                        "email": _email.text,
+                      }).then((value) async {
+                        try {
+                          await currentUser.user!.sendEmailVerification();
+                          Fluttertoast.showToast(
+                              msg: "Verification Email Sent",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              textColor: Colors.black,
+                              fontSize: 16.0);
+                          Map<String, dynamic> _map = {
+                            "email": _email.text,
+                            "Role": dropdownvalue
+                          };
+                          if (dropdownvalue == 'Teacher') {
+                            _colT.add(_map);
+                          } else if (dropdownvalue == 'Student') {
+                            _colS.add(_map);
+                          } else {}
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    LoginScreen(user: currentUser.user)),
+                          );
+                          _name.clear();
+                          _email.clear();
+                          _pwd.clear();
+                          _confirmpwd.clear();
+                        } catch (e) {
+                          print(
+                              "An error occurred while trying to send email verification");
+                          Fluttertoast.showToast(
+                              msg: e.toString(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              textColor: Colors.black,
+                              fontSize: 16.0);
+                        }
+                      }).catchError((err) => Fluttertoast.showToast(
+                              msg: err.toString(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 3,
+                              textColor: Colors.black,
+                              fontSize: 16.0)))
+                  .catchError((err) => Fluttertoast.showToast(
                       msg: err.toString(),
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 3,
                       textColor: Colors.black,
-                      fontSize: 16.0
-                  )))
-                  .catchError((err) =>
-                  Fluttertoast.showToast(
-                      msg: err.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 3,
-                      textColor: Colors.black,
-                      fontSize: 16.0
-                  ));
+                      fontSize: 16.0));
             } else {
+              //print( dropdownvalue );
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -521,6 +528,21 @@ class _RegNowScreenState extends State<RegNowScreen> {
   //         context, MaterialPageRoute(builder: (context) => NewStudentScreen()));
   //   }
   // }
+  Widget dropdown() {
+    var items = ['Teacher', 'Student'];
+
+    return DropdownButton(
+        value: dropdownvalue,
+        icon: Icon(Icons.keyboard_arrow_down),
+        items: items.map((String items) {
+          return DropdownMenuItem(value: items, child: Text(items));
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            dropdownvalue = newValue!;
+          });
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -546,17 +568,15 @@ class _RegNowScreenState extends State<RegNowScreen> {
               ),
               Form(
                   key: _key,
-                  child: Column(
-                      children: <Widget>[
-                        _buildNameTF(),
-                        _buildEmailTF(),
-                        //_buildPhoneTF(),
-                        _buildPasswordTF(),
-                        _buildConfirmPasswordTF(),
-                        _buildLoginBtn(),
-                      ]
-                  )
-              ),
+                  child: Column(children: <Widget>[
+                    _buildNameTF(),
+                    _buildEmailTF(),
+                    //_buildPhoneTF(),
+                    _buildPasswordTF(),
+                    _buildConfirmPasswordTF(),
+                    dropdown(),
+                    _buildLoginBtn(),
+                  ])),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // AlreadyHaveAnAccountCheck(
               //   login: false,
@@ -578,4 +598,7 @@ class _RegNowScreenState extends State<RegNowScreen> {
       ),
     );
   }
+
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
